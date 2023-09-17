@@ -487,9 +487,9 @@ column_names = {
 }
 tolerances = {'pass': [1.0, 5.0]}
 solution = pd.DataFrame({
-    'video_id': ['a', 'a'],
-    'event': ['pass', 'pass'],
-    'time': [0, 15],
+    'video_id': ['a', 'a', 'a'],
+    'event': ['pass', 'pass', 'pass'],
+    'time': [0, 15, 20],
 })
 submission = pd.DataFrame({
     'video_id': ['a', 'a', 'a'],
