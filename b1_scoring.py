@@ -352,10 +352,10 @@ def event_detection_ap(
     solution = solution.sort_values([series_id_column_name, time_column_name])
     submission = submission.sort_values([series_id_column_name, time_column_name])
 
-    print("\n----------1. solution")
-    print(solution)
-    print("\n----------2. submission")
-    print(submission)
+    # print("\n----------1. solution")
+    # print(solution)
+    # print("\n----------2. submission")
+    # print(submission)
 
 
     # Extract scoring intervals.
@@ -383,20 +383,20 @@ def event_detection_ap(
         .reset_index(drop=True)
     )
 
-    print("\n----------3. ground_truths")
-    print(ground_truths)
+    # print("\n----------3. ground_truths")
+    # print(ground_truths)
 
     # Map each event class to its prevalence (needed for recall calculation)
     class_counts = ground_truths.value_counts(event_column_name).to_dict()
 
-    print("\n----------4. class_counts")
-    print(class_counts)
+    # print("\n----------4. class_counts")
+    # print(class_counts)
 
     # Create table for detections with a column indicating a match to a ground-truth event
     detections = submission.assign(matched = False)
 
-    print("\n----------5. detections")
-    print(detections)
+    # print("\n----------5. detections")
+    # print(detections)
 
     # Remove detections outside of scoring intervals
     if use_scoring_intervals:
@@ -419,8 +419,8 @@ def event_detection_ap(
         columns=[event_column_name, 'tolerance', series_id_column_name],
     )
 
-    print("\n----------6. aggregation_keys")
-    print(aggregation_keys)
+    # print("\n----------6. aggregation_keys")
+    # print(aggregation_keys)
 
 
     # Create match evaluation groups: event-class x tolerance x series_id
@@ -430,8 +430,8 @@ def event_detection_ap(
         .groupby([event_column_name, 'tolerance', series_id_column_name])
     )
 
-    print("\n----------7. detections_grouped")
-    print(detections_grouped)
+    # print("\n----------7. detections_grouped")
+    # print(detections_grouped)
 
     ground_truths_grouped = (
         aggregation_keys
@@ -439,8 +439,8 @@ def event_detection_ap(
         .groupby([event_column_name, 'tolerance', series_id_column_name])
     )
 
-    print("\n----------8. ground_truths_grouped")
-    print(ground_truths_grouped)
+    # print("\n----------8. ground_truths_grouped")
+    # print(ground_truths_grouped)
 
     # Match detections to ground truth events by evaluation group
     detections_matched = []
@@ -452,8 +452,8 @@ def event_detection_ap(
         )
     detections_matched = pd.concat(detections_matched)
 
-    print("\n----------9. detections_matched")
-    print(detections_matched)
+    # print("\n----------9. detections_matched")
+    # print(detections_matched)
 
     # Compute AP per event x tolerance group
     event_classes = ground_truths[event_column_name].unique()
@@ -469,10 +469,10 @@ def event_detection_ap(
         )
     )
 
-    print("\n----------10. ap_table")
-    print(ap_table)
+    # print("\n----------10. ap_table")
+    # print(ap_table)
 
-    print("\nend------------")
+    # print("\nend------------")
     # Average over tolerances, then over event classes
     mean_ap = ap_table.groupby(event_column_name).mean().sum() / len(event_classes)
 
@@ -480,35 +480,14 @@ def event_detection_ap(
 
 
 column_names = {
-    'series_id_column_name': 'video_id',
-    'time_column_name': 'time',
+    'series_id_column_name': 'series_id',
+    'time_column_name': 'step',
     'event_column_name': 'event',
     'score_column_name': 'score',
 }
-tolerances = {'pass': [1.0, 5.0]}
-solution = pd.DataFrame({
-    'video_id': ['a', 'a', 'a'],
-    'event': ['pass', 'pass', 'pass'],
-    'time': [0, 15, 20],
-})
-submission = pd.DataFrame({
-    'video_id': ['a', 'a', 'a'],
-    'event': ['pass', 'pass', 'pass'],
-    'score': [1.0, 1.0, 1.0],
-    'time': [0, 11, 14.5],
-})
+tolerances = {0: [12, 36, 60, 90, 120, 150, 180, 240, 300, 360], 1: [12, 36, 60, 90, 120, 150, 180, 240, 300, 360]}
+
+solution = pd.read_csv("sample_solution.csv")
+submission = pd.read_csv("submission.csv")
+print(submission.info())
 print(score(solution, submission, tolerances, **column_names))
-
-'''
-P = TP / (TP + FP) => TP, FP, TP
-
-R = TP / (TP + FN)
-
-
-code 
-
-create solution
-
-create submission
-
-'''
