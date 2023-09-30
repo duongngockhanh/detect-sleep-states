@@ -7,7 +7,7 @@ train = pd.read_parquet("data/child-mind-institute-detect-sleep-states/test_seri
 
 new = train[["series_id", "step"]]
 
-new['event'] = 0
-new.loc[300:449, 'event'] = 1
+new['event'] = 1
+new.loc[300:449, 'event'] = 0
 
 new.to_csv("sample_solution.csv", index=False)
