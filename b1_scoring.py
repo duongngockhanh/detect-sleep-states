@@ -263,8 +263,25 @@ column_names = {
     'event_column_name': 'event',
     'score_column_name': 'score',
 }
-tolerances = {0: [12, 36, 60, 90, 120, 150, 180, 240, 300, 360], 1: [12, 36, 60, 90, 120, 150, 180, 240, 300, 360]}
+tolerances = {"onset": [12, 36, 60, 90, 120, 150, 180, 240, 300, 360], "wakeup": [12, 36, 60, 90, 120, 150, 180, 240, 300, 360]}
 
-solution = pd.read_csv("sample_solution.csv")
-submission = pd.read_csv("submission.csv")
+
+import argparse
+
+
+parser = argparse.ArgumentParser()
+
+parser.add_argument("--sol", type=str, default="solution.csv", help="path to solution file")
+parser.add_argument("--sub", type=str, default="submission.csv", help="path to submission file")
+
+opt = parser.parse_args()
+
+solution_path = opt.sol
+submission_path = opt.sub
+
+solution = pd.read_csv(solution_path)
+submission = pd.read_csv(submission_path)
+
+# python b1_scoring.py --sol my_solution.csv --sub my_submission.csv
+
 print(score(solution, submission, tolerances, **column_names))
