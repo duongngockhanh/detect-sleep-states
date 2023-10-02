@@ -19,8 +19,8 @@ for a1 in src_data:
     ax[0].plot(x, ay1)
     for i in range(1, n_durable):
         ax[0].plot([i*150,i*150],[-90,90], linestyle="--", color="red")
-        # ax[0].plot([i*150-130,i*150-130],[-90,90], linestyle="--", color="green")
-    # ax[0].plot([n_durable*150-130,n_durable*150-130],[-90,90], linestyle="--", color="green")
+        ax[0].plot([i*150-130,i*150-130],[-90,90], linestyle="--", color="green")
+    ax[0].plot([n_durable*150-130,n_durable*150-130],[-90,90], linestyle="--", color="green")
     # ax[0].legend()
     ax[0].set(title="onset - anglez",
                 xlabel="step",
@@ -30,12 +30,12 @@ for a1 in src_data:
     ax[1].plot(x, ay2)
     for i in range(1, n_durable):
         ax[1].plot([i*150,i*150],[-0.1,1.1], linestyle="--", color="red")
-        # ax[1].plot([i*150-130,i*150-130],[-0.1,1.1], linestyle="--", color="green")
-    # ax[1].plot([n_durable*150-130,n_durable*150-130],[-0.1,1.1], linestyle="--", color="green")
+        ax[1].plot([i*150-130,i*150-130],[-0.1,1.1], linestyle="--", color="green")
+    ax[1].plot([n_durable*150-130,n_durable*150-130],[-0.1,1.1], linestyle="--", color="green")
     # ax[1].legend()
     ax[1].set(title="onset - enmo",
                 xlabel="step",
                 ylabel="enmo")
 
 
-    fig.savefig(a1[:-4] + ".png")
+    fig.savefig(a1[:-4] + "_event.png")
